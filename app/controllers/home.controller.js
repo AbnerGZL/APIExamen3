@@ -23,7 +23,12 @@ export const getProductById = async (req, res) => {
 
 export const getCarActive = async (req, res) => {
   try {
-    const car = await Carrito.findAll({id_usuario: parseInt(req.params.id), estado: 1});
+    const car = await Carrito.findAll({
+      where: {
+        id_usuario: parseInt(req.params.id),
+        estado: 1,
+      },
+    });
     res.status(200).json(car);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener carrito', error });
@@ -50,7 +55,7 @@ export const postProducts = async (req, res) => {
 
 export const postCar = async (req, res) => {
   const { id } = req.params;
-  const { id_producto } = req.query;
+  const id_producto  = req.body.id_producto;
 
   try {
     if (!id || !id_producto) {
@@ -63,6 +68,14 @@ export const postCar = async (req, res) => {
       id_producto: parseInt(id_producto),
       estado: 1
     });
+
+    const [updated] = await Producto.update(
+        {
+          stock: sequelize.literal(`stock - 1`),
+        },
+        { where: { id: id_producto } }
+      );
+
     return res.status(201).json(nuevoCarrito);
   } catch (error) {
     return res.status(500).json({ message: 'Error al crear nuevo carrito', error });
@@ -101,7 +114,7 @@ export const putProducts = async (req, res) => {
 
 
 export const patchCar = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
       if (!id) {
@@ -198,5 +211,14 @@ export const register = async (req, res) => {
     return res.status(201).json(nuevoUsuario);
   } catch (error) {
     return res.status(500).json({ message: 'Error al registrar usuario', error });
+  }
+}
+
+export const users = async (req, res) => {
+  try {
+    const usuarios = await Usuario.findAll({});
+    res.status(200).json(usuarios);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuarios', error });
   }
 }

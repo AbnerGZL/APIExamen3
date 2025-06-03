@@ -10,7 +10,8 @@ import {
     deleteCar,
     patchCar,
     login,
-    register
+    register,
+    users
 } from "../controllers/home.controller.js";
 
 const router = express.Router();
@@ -18,6 +19,7 @@ const router = express.Router();
 router.get('/products', getProducts);
 router.get('/products/:id', getProductById);
 router.get('/car/:id', getCarActive);
+router.get('/users', users);
 
 router.post('/products', postProducts);
 router.post('/login', login);
