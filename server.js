@@ -5,9 +5,7 @@ import ecommerceRoutes from './app/routes/ecommerce.routes.js';
 
 const app = express();
 const corsOptions = {
-    origin: 'http://localhost:8080',
-    origin: 'http://localhost:3000',
-    origin: 'https://frontexamen3.onrender.com/',
+    origin: ['https://frontexamen3.onrender.com', 'http://localhost:3000', 'http://localhost:8080'],
     credentials: true
 };
 
